@@ -283,7 +283,7 @@ jobs:
         with:
           version: 2201.3.2
       - run: bal version
-      - run: bal run hello.bal
+      - run: bal run dashboard-extractor.bal
 
     # steps:
     #   - name: Checkout Repository
