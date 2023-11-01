@@ -300,8 +300,8 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: Linux Installer deb
-      - name: Install Ballerina DEB
-        run: sudo dpkg -i ballerina-*-linux-x64.deb
+      # - name: Install Ballerina DEB
+      #   run: sudo dpkg -i ballerina-*-linux-x64.deb
       - name: Run compiler tests
         working-directory: nballerina/compiler
         run: bal test --disable-groups private
