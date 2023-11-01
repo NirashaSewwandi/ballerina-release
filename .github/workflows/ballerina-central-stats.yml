@@ -14,10 +14,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Download Linux Deb Installer
-        uses: actions/download-artifact@v2
-        with:
-          name: Linux Installer deb
+      # - name: Download Linux Deb Installer
+      #   uses: actions/download-artifact@v2
+      #   with:
+      #     name: Linux Installer deb
       - name: Install Ballerina DEB
         run: sudo dpkg -i ballerina-*-linux-x64.deb
       - name: Run compiler tests
