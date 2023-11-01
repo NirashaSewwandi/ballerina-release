@@ -1,5 +1,5 @@
-name: Daily Full Build Pipeline (2201.3.x)
-run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+name: Dashboard Extractor
+run-name: Testing out GitHub Actions 
 on: [push]
 # on:
 #   workflow_dispatch:
@@ -9,9 +9,7 @@ on: [push]
 
 jobs:
   nballerina-build:
-    # needs: build-distribution
     name: Build nBallerina
-    # runs-on: ubuntu-latest
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
