@@ -8,68 +8,68 @@ on: [push]
 
 
 jobs:
-  build-lang:
-    name: Build ballerina-lang
-    runs-on: ubuntu-latest
-    timeout-minutes: 150
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-      - name: Setup Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.x'
-      - name: Install Python Packages
-        run: |
-          pip install requests
-          pip install httplib2
-          pip install colorama
-          pip install configobj
-          pip install requests
-          pip install PyGithub
-          pip install cryptography
-      - name: Set up JDK 11
-        uses: actions/setup-java@v2
-        with:
-          distribution: 'temurin'
-          java-version: '11'
-      - name: Build ballerina-lang
-        run: python -u dependabot/full_build_pipeline.py ./ --lang-branch $PATCH_LEVEL --build-level 0
-        env:
-          packageUser: ${{ secrets.BALLERINA_BOT_USERNAME }}
-          packagePAT: ${{ secrets.BALLERINA_BOT_TOKEN }}
-          devCentralToken: ${{ secrets.BALLERINA_DEV_CENTRAL_ACCESS_TOKEN }}
-          TEST_MODE_ACTIVE: true
-      - name: Notify Build Failure
-        if: ${{ failure() }}
-        shell: bash
-        run:
-          FILE="failed_modules.txt"
+  # build-lang:
+  #   name: Build ballerina-lang
+  #   runs-on: ubuntu-latest
+  #   timeout-minutes: 150
+  #   steps:
+  #     - name: Checkout Repository
+  #       uses: actions/checkout@v2
+  #     - name: Setup Python
+  #       uses: actions/setup-python@v2
+  #       with:
+  #         python-version: '3.x'
+  #     - name: Install Python Packages
+  #       run: |
+  #         pip install requests
+  #         pip install httplib2
+  #         pip install colorama
+  #         pip install configobj
+  #         pip install requests
+  #         pip install PyGithub
+  #         pip install cryptography
+  #     - name: Set up JDK 11
+  #       uses: actions/setup-java@v2
+  #       with:
+  #         distribution: 'temurin'
+  #         java-version: '11'
+  #     - name: Build ballerina-lang
+  #       run: python -u dependabot/full_build_pipeline.py ./ --lang-branch $PATCH_LEVEL --build-level 0
+  #       env:
+  #         packageUser: ${{ secrets.BALLERINA_BOT_USERNAME }}
+  #         packagePAT: ${{ secrets.BALLERINA_BOT_TOKEN }}
+  #         devCentralToken: ${{ secrets.BALLERINA_DEV_CENTRAL_ACCESS_TOKEN }}
+  #         TEST_MODE_ACTIVE: true
+  #     - name: Notify Build Failure
+  #       if: ${{ failure() }}
+  #       shell: bash
+  #       run:
+  #         FILE="failed_modules.txt"
 
-          while read module; do
-          python3 dependabot/notify_full_build_failure.py $module $PATCH_LEVEL;
-          done < ${FILE}
-        env:
-          CHAT_ID: ${{ secrets.NOTIFICATIONS_CHAT_ID }}
-          CHAT_KEY: ${{ secrets.NOTIFICATIONS_CHAT_KEY }}
-          CHAT_TOKEN: ${{ secrets.NOTIFICATIONS_CHAT_TOKEN }}
-          ENV_USER_ENCRYPTION_KEY: ${{secrets.USER_ENCRYPTION_KEY}}
-          BALLERINA_BOT_TOKEN: ${{ secrets.BALLERINA_BOT_TOKEN }}
-      - name: Get lang version
-        id: lang-version
-        run: |
-          VERSION=$((grep -w "version" | cut -d= -f2 | xargs) < ballerina-lang/gradle.properties)
-          SPEC_VERSION=$((grep -w "specVersion" | cut -d= -f2 | xargs) < ballerina-lang/gradle.properties)
-          echo "::set-output name=version::$VERSION"
-          echo "::set-output name=specVersion::$SPEC_VERSION"
-      - name: Archive Lang Artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: Ballerina Lang Artifacts
-          path: ~/.m2/
-    outputs:
-      lang-version: ${{ steps.lang-version.outputs.version }}
-      spec-version: ${{ steps.lang-version.outputs.specVersion }}
+  #         while read module; do
+  #         python3 dependabot/notify_full_build_failure.py $module $PATCH_LEVEL;
+  #         done < ${FILE}
+  #       env:
+  #         CHAT_ID: ${{ secrets.NOTIFICATIONS_CHAT_ID }}
+  #         CHAT_KEY: ${{ secrets.NOTIFICATIONS_CHAT_KEY }}
+  #         CHAT_TOKEN: ${{ secrets.NOTIFICATIONS_CHAT_TOKEN }}
+  #         ENV_USER_ENCRYPTION_KEY: ${{secrets.USER_ENCRYPTION_KEY}}
+  #         BALLERINA_BOT_TOKEN: ${{ secrets.BALLERINA_BOT_TOKEN }}
+  #     - name: Get lang version
+  #       id: lang-version
+  #       run: |
+  #         VERSION=$((grep -w "version" | cut -d= -f2 | xargs) < ballerina-lang/gradle.properties)
+  #         SPEC_VERSION=$((grep -w "specVersion" | cut -d= -f2 | xargs) < ballerina-lang/gradle.properties)
+  #         echo "::set-output name=version::$VERSION"
+  #         echo "::set-output name=specVersion::$SPEC_VERSION"
+  #     - name: Archive Lang Artifacts
+  #       uses: actions/upload-artifact@v2
+  #       with:
+  #         name: Ballerina Lang Artifacts
+  #         path: ~/.m2/
+  #   outputs:
+  #     lang-version: ${{ steps.lang-version.outputs.version }}
+  #     spec-version: ${{ steps.lang-version.outputs.specVersion }}
 
  
 
@@ -271,39 +271,39 @@ jobs:
   #     project-version: ${{ steps.project-version.outputs.version }}
   #     short-version: ${{ steps.project-version.outputs.sVersion }}
  
-  # nballerina-build:
-  #   needs: build-distribution
-  #   name: Build nBallerina
-  #   runs-on: ubuntu-latest
+  nballerina-build:
+    # needs: build-distribution
+    name: Build nBallerina
+    runs-on: ubuntu-latest
 
-  #   steps:
-  #     - name: Checkout Repository
-  #       uses: actions/checkout@v2
-  #     - name: Set up JDK 11
-  #       uses: actions/setup-java@v2
-  #       with:
-  #         distribution: 'adopt'
-  #         java-version: '11'
-  #     - name: Install Python Packages
-  #       run: |
-  #         pip install requests
-  #         pip install retry
-  #         pip install PyGithub
-  #         pip install cryptography
-  #         pip install httplib2
-  #     - name: Clone nBallerina repository
-  #       run: git clone https://github.com/ballerina-platform/nballerina.git
-  #     - name: Switch to last working nBallerina commit
-  #       run: git checkout jballerina-2201.3
-  #       working-directory: nballerina
-  #     - name: Download Linux Deb Installer
-  #       uses: actions/download-artifact@v2
-  #       with:
-  #         name: Linux Installer deb
-  #     - name: Install Ballerina DEB
-  #       run: sudo dpkg -i ballerina-*-linux-x64.deb
-  #     - name: Run compiler tests
-  #       working-directory: nballerina/compiler
-  #       run: bal test --disable-groups private
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+      - name: Set up JDK 11
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '11'
+      - name: Install Python Packages
+        run: |
+          pip install requests
+          pip install retry
+          pip install PyGithub
+          pip install cryptography
+          pip install httplib2
+      - name: Clone nBallerina repository
+        run: git clone https://github.com/ballerina-platform/nballerina.git
+      - name: Switch to last working nBallerina commit
+        run: git checkout jballerina-2201.3
+        working-directory: nballerina
+      - name: Download Linux Deb Installer
+        uses: actions/download-artifact@v2
+        with:
+          name: Linux Installer deb
+      - name: Install Ballerina DEB
+        run: sudo dpkg -i ballerina-*-linux-x64.deb
+      - name: Run compiler tests
+        working-directory: nballerina/compiler
+        run: bal test --disable-groups private
       
  
