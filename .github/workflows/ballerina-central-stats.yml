@@ -1,0 +1,24 @@
+name: Daily Full Build Pipeline (2201.3.x)
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '30 18 * * *'   # 00:00 in LK time (GMT+5:30)
+
+
+jobs:
+  nballerina-build:
+    # needs: build-distribution
+    name: Build nBallerina
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download Linux Deb Installer
+        uses: actions/download-artifact@v2
+        with:
+          name: Linux Installer deb
+      - name: Install Ballerina DEB
+        run: sudo dpkg -i ballerina-*-linux-x64.deb
+      - name: Run compiler tests
+        working-directory: nballerina/compiler
+        run: bal test --disable-groups private
