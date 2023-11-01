@@ -47,7 +47,6 @@ public function main() returns error? {
     map<(string|string[])>? headers = {
         "x-api-key": apiKey
     };
-
     sheets:ConnectionConfig spreadsheetConfig = {
         auth: {
             clientId: spreadsheetClientID,
@@ -64,6 +63,8 @@ public function main() returns error? {
     string encodedQuery = check url:encode(queryPullCount, "UTF-8");
     string path = string `/query?query=${encodedQuery}`;
     http:Response response = check http->get(path, headers);
+    log:printInfo(check response.getTextPayload());
+
     json jsonPayload = check response.getJsonPayload();
     string[][] jsonPayloadExtractorResult = check jsonPayloadExtractor(jsonPayload);
 
