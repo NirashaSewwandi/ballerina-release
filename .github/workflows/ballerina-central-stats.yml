@@ -20,4 +20,7 @@ jobs:
       - run: bal version
       - name: Run Script
         working-directory: ./centralStats/
+        env:
+          APPLICATION_ID: ${{ secrets.APPLICATION_ID }}
+          API_KEY: ${{secrets.API_KEY}}
         run: bal run 
