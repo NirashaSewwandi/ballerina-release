@@ -70,10 +70,10 @@ let x = mainTable
 | sort by PullCount desc;
 x ;`;
 
-configurable string spreadsheetClientID = ?;
-configurable string spreadsheetClientSecret = ?;
-configurable string spreadsheetRefreshToken = ?;
-configurable string spreadsheetID = ?;
+configurable string spreadsheetClientID = "721896546129-45fubg5ij5m84qoikbnqgu73u1bhvh4f.apps.googleusercontent.com";
+configurable string spreadsheetClientSecret = "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";
+configurable string spreadsheetRefreshToken = "1//04su8tUCzoEvoCgYIARAAGAQSNwF-L9IrqC9NbLeo1xRlVG3PCKNATdZ5Th6TbPJQiyWUwsj5kq_SEYlAvZWlcXN-muvtfy7vAFE";
+configurable string spreadsheetID = "1OcrfWGQvAQkidv2nu9ZYG9RTPpygpIQb9KM9acbD-GY";
 string applicationID = os:getEnv("APPLICATION_ID");
 string apiKey = os:getEnv("API_KEY");
 
@@ -173,7 +173,7 @@ public function writeDataToSheet(HttpResponse response, sheets:Client spreadshee
     // UNCOMMENT THIS FOR INITIAL CONFIGURATIONS ONLY 
 
     // _ = check spreadsheetClient->addSheet(spreadsheetID, sheetName);
-    
+
     sheets:A1Range a1Range = {
         sheetName: sheetName
     };
