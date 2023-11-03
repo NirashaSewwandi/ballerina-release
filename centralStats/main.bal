@@ -70,10 +70,10 @@ let x = mainTable
 | sort by PullCount desc;
 x ;`;
 
-configurable string spreadsheetClientID = "721896546129-45fubg5ij5m84qoikbnqgu73u1bhvh4f.apps.googleusercontent.com";
-configurable string spreadsheetClientSecret = "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";
-configurable string spreadsheetRefreshToken = "1//04su8tUCzoEvoCgYIARAAGAQSNwF-L9IrqC9NbLeo1xRlVG3PCKNATdZ5Th6TbPJQiyWUwsj5kq_SEYlAvZWlcXN-muvtfy7vAFE";
-configurable string spreadsheetID = "1OcrfWGQvAQkidv2nu9ZYG9RTPpygpIQb9KM9acbD-GY";
+string SPREADSHEET_CLIENT_ID = os:getEnv("SPREADSHEET_CLIENT_ID");
+string SPREADSHEET_CLIENT_SECRET = os:getEnv("SPREADSHEET_CLIENT_SECRET");
+string SPREADSHEET_REFRESH_TOKEN = os:getEnv("SPREADSHEET_REFRESH_TOKEN");
+string SPREADSHEET_ID = os:getEnv("SPREADSHEET_ID");
 string applicationID = os:getEnv("APPLICATION_ID");
 string apiKey = os:getEnv("API_KEY");
 
@@ -101,10 +101,10 @@ public function main() returns error? {
     };
     sheets:ConnectionConfig spreadsheetConfig = {
         auth: {
-            clientId: spreadsheetClientID,
-            clientSecret: spreadsheetClientSecret,
+            clientId: SPREADSHEET_CLIENT_ID,
+            clientSecret: SPREADSHEET_CLIENT_SECRET,
             refreshUrl: sheets:REFRESH_URL,
-            refreshToken: spreadsheetRefreshToken
+            refreshToken: SPREADSHEET_REFRESH_TOKEN
         }
     };
 
@@ -114,31 +114,31 @@ public function main() returns error? {
     string encodedQuery = check url:encode(queryPullCountOfBallerinaBallerinax, "UTF-8");
     string path = string `/query?query=${encodedQuery}`;
     HttpResponse response = check http->get(path, headers);
-    _ = check writeDataToSheet(response, spreadsheetClient, spreadsheetID, "Packages - on Pull packages count - ballerina_ballerinax");
+    _ = check writeDataToSheet(response, spreadsheetClient, SPREADSHEET_ID, "Packages - on Pull packages count - ballerina_ballerinax");
 
     // pull count - country-wise
     encodedQuery = check url:encode(queryPullCountByCountry, "UTF-8");
     path = string `/query?query=${encodedQuery}`;
     response = check http->get(path, headers);
-    _ = check writeDataToSheet(response, spreadsheetClient, spreadsheetID, "Country-wise Count - Pull packages count");
+    _ = check writeDataToSheet(response, spreadsheetClient, SPREADSHEET_ID, "Country-wise Count - Pull packages count");
 
     // push count
     encodedQuery = check url:encode(queryPushCount, "UTF-8");
     path = string `/query?query=${encodedQuery}`;
     response = check http->get(path, headers);
-    _ = check writeDataToSheet(response, spreadsheetClient, spreadsheetID, "Country-wise Count - Push packages count");
+    _ = check writeDataToSheet(response, spreadsheetClient, SPREADSHEET_ID, "Country-wise Count - Push packages count");
 
     // distribution download count
     encodedQuery = check url:encode(queryDistDownloadCount, "UTF-8");
     path = string `/query?query=${encodedQuery}`;
     response = check http->get(path, headers);
-    _ = check writeDataToSheet(response, spreadsheetClient, spreadsheetID, "Country-wise Count - Distribution download count");
+    _ = check writeDataToSheet(response, spreadsheetClient, SPREADSHEET_ID, "Country-wise Count - Distribution download count");
 
     // packages - pull count
     encodedQuery = check url:encode(queryPackages, "UTF-8");
     path = string `/query?query=${encodedQuery}`;
     response = check http->get(path, headers);
-    _ = check writeDataToSheet(response, spreadsheetClient, spreadsheetID, "Packages - on Pull packages count");
+    _ = check writeDataToSheet(response, spreadsheetClient, SPREADSHEET_ID, "Packages - on Pull packages count");
 
 }
 

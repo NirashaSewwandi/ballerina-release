@@ -21,6 +21,10 @@ jobs:
       - name: Run Script
         working-directory: ./centralStats/
         env:
+          SPREADSHEET_CLIENT_ID: ${{secrets.SPREADSHEET_CLIENT_ID}}
+          SPREADSHEET_CLIENT_SECRET: ${{secrets.SPREADSHEET_CLIENT_SECRET}}
+          SPREADSHEET_REFRESH_TOKEN: ${{secrets.SPREADSHEET_REFRESH_TOKEN}}
+          SPREADSHEET_ID: ${{secrets.SPREADSHEET_ID}}
           APPLICATION_ID: ${{ secrets.APPLICATION_ID }}
           API_KEY: ${{secrets.API_KEY}}
         run: bal run 
